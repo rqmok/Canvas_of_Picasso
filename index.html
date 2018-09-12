@@ -9,8 +9,25 @@
     <link rel="stylesheet" type="text/css" media="screen" href="styles/main.css" />
 </head>
 <body>
-    <canvas id="canvas" width="100" height="100"></canvas>
-
+    <div id="tools" class="toolbar">
+        <img src="images/brush.png" class="active" />
+        <img src="images/pen.png" />
+        <img src="images/pencil.png" />
+        <img src="images/color.png" />
+        <img src="images/bucket.png" />
+        <img src="images/undo.png" class="disabled" />
+        <img src="images/delete.png" />
+    </div>
+    <canvas id="canvas" width="700" height="500"></canvas>
+    <div id="colors" class="toolbar">
+        <span id="blue" class="dot"></span> <!--blue hex: 0f3c7d, rgb(15,60,125) -->
+        <span id="green" class="dot"></span> <!--green hex: 41644b, rgb(65,100,75) -->
+        <span id="brown" class="dot"></span> <!--brown hex: a53c23, rgb(165,60,35) -->
+        <span id="yellow" class="dot"></span> <!--yellow hex: c3b464, rgb(195,180,100) -->
+        <span id="red" class="dot"></span> <!--red hex: 732337, rgb(115,35,55) -->
+        <span id="black" class="dot"></span> <!--black hex: 000000, rgb(0,0,0) -->
+        <span id="white" class="dot"></span> <!--white hex: ffffff, rgb(255,255,255) --> 
+    </div>
     <script type="text/javascript" src="scripts/main.js"></script>
 </body>
 </html>
