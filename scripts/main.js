@@ -3,15 +3,12 @@ var canvas = document.querySelector('#canvas');
 var context = canvas.getContext('2d');
 
 // Canvas settings
+var tool = 'brush';
 var toolSize = '5'; // need to choose same size as brush size since it is default
 var toolColor = '#000000';
 var linePoints = [];
 var canvasState = [];
 var undoButton = document.querySelector( '[data-action=undo]' );
-
-// Default
-context.lineJoin = "round";
-context.lineCap = "round";
 
 // Event listeners
 canvas.addEventListener('mousedown', draw);
@@ -21,7 +18,7 @@ window.addEventListener('touchend', stop);
 window.addEventListener('resize', resizeCanvas);
 
 document.querySelector( '#tools' ).addEventListener( 'click', selectTool );
-document.querySelector( '#colors' ).addEventListener( 'click', selectColor );
+// document.querySelector( '#colors' ).addEventListener( 'click', selectColor );
 
 // Functions
 function clearCanvas() {
@@ -34,29 +31,24 @@ function clearCanvas() {
 }
 
 function draw(e) {
-    if (e.which === 1 || e.type === 'touchstart' || e.type === 'touchmove') {
+    if (e.which === 1 || e.type === 'touchstart' || e.type === 'mousedown') {
         window.addEventListener('mousemove', draw);
         window.addEventListener('touchmove', draw);
 
-        var mouseX = e.pageX - canvas.offsetLeft;
-        var mouseY = e.pageY - canvas.offsetTop;
-        var mouseDrag = e.type === 'mousemove';
+        if (e.type === 'touchstart' || e.type === 'mousedown') saveState();
 
-        if (e.type === 'touchstart' || e.type === 'touchmove' ) {
-            mouseX = e.touches[0].pageX - canvas.offsetLeft;
-            mouseY = e.touches[0].pageY - canvas.offsetTop;
-            mouseDrag = e.type === 'touchmove';
+        switch (tool) {
+            case 'brush':
+                break;
+            case 'pen':
+                linePoints.push(getLinePointForPen(e));
+                break;
+            case 'pencil':
+                break;
+            default:
+                // Fallback case
+                linePoints.push(getBasicLinePoint(e));
         }
-
-        if (e.type === 'mousedown' || e.type === 'touchstart') saveState();
-
-        linePoints.push({
-            x: mouseX,
-            y: mouseY,
-            drag: mouseDrag,
-            width: toolSize,
-            color: toolColor
-        });
 
         updateCanvas();
     }
@@ -69,23 +61,15 @@ function highlightButton( button ) {
 }
 
 function renderLine() {
-    for (var i = 0, length = linePoints.length; i < length; i++) {
-        if (!linePoints[i].drag) {
-            context.beginPath();
+    for (var i = 1, length = linePoints.length; i < length; i++) {
+        context.lineWidth = linePoints[i].width;
+        context.strokeStyle = linePoints[i].color;
 
-            context.lineWidth = linePoints[i].width;
-            context.lineJoin = "round";
-            context.lineCap = "round";
-            context.strokeStyle = linePoints[i].color;
-
-            context.moveTo(linePoints[i].x, linePoints[i].y);
-            context.lineTo(linePoints[i].x + 0.5, linePoints[i].y + 0.5);
-        } else {
-            context.lineTo(linePoints[i].x, linePoints[i].y);
-        }
+        context.beginPath();
+        context.moveTo(linePoints[i - 1].x, linePoints[i - 1].y);
+        context.lineTo(linePoints[i].x, linePoints[i].y);
+        context.stroke();
     }
-
-    context.stroke();
 }
 
 function saveState() {
@@ -99,6 +83,7 @@ function selectTool( e ) {
     if ( e.target === e.currentTarget ) return;
     if ( !e.target.dataset.action ) highlightButton( e.target );
 
+    tool = e.target.dataset.tool || tool;
     toolColor = e.target.dataset.color || toolColor;
 
     if ( e.target === undoButton ) undoState();
@@ -128,4 +113,39 @@ function updateCanvas() {
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.putImageData(canvasState[0], 0, 0);
     renderLine();
+}
+
+function getBasicLinePoint(e) {
+    var mouseX = e.pageX - canvas.offsetLeft;
+    var mouseY = e.pageY - canvas.offsetTop;
+    var mouseDrag = e.type === 'mousemove';
+
+    if (e.type === 'touchstart' || e.type === 'touchmove' ) {
+        mouseX = e.touches[0].pageX - canvas.offsetLeft;
+        mouseY = e.touches[0].pageY - canvas.offsetTop;
+        mouseDrag = e.type === 'touchmove';
+    }
+
+    return {
+        x: mouseX,
+        y: mouseY,
+        drag: mouseDrag,
+        width: toolSize,
+        color: toolColor
+    }
+}
+
+function getLinePointForPen(e) {
+    // Get the default line point settings
+    var point = getBasicLinePoint(e);
+
+    // Add the settings of pen to the point
+    point.width = getRandomInt(parseInt(toolSize) - 2, parseInt(toolSize));
+    
+    // Return the point
+    return point;
+}
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
