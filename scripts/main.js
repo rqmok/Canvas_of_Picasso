@@ -43,9 +43,6 @@ function draw(e) {
         var mouseY = e.pageY - canvas.offsetTop;
         var mouseDrag = e.type === 'mousemove';
 
-        console.log(mouseX);
-        console.log(mouseY);
-
         if (e.type === 'touchstart' || e.type === 'touchmove' ) {
             mouseX = e.touches[0].pageX - canvas.offsetLeft;
             mouseY = e.touches[0].pageY - canvas.offsetTop;
