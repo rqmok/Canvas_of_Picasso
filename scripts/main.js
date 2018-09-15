@@ -18,7 +18,7 @@ window.addEventListener('touchend', stop);
 window.addEventListener('resize', resizeCanvas);
 
 document.querySelector( '#tools' ).addEventListener( 'click', selectTool );
-// document.querySelector( '#colors' ).addEventListener( 'click', selectColor );
+document.querySelector( '#colors' ).addEventListener( 'click', selectColor );
 
 // Functions
 function clearCanvas() {
@@ -79,15 +79,20 @@ function saveState() {
     undoButton.classList.remove( 'disabled' );
 }
 
-function selectTool( e ) {
+function selectTool(e) {
     if ( e.target === e.currentTarget ) return;
     if ( !e.target.dataset.action ) highlightButton( e.target );
 
     tool = e.target.dataset.tool || tool;
-    toolColor = e.target.dataset.color || toolColor;
 
     if ( e.target === undoButton ) undoState();
     if ( e.target.dataset.action == 'delete' ) clearCanvas();
+}
+
+function selectColor(e) {
+    if (e.target === e.currentTarget) return;
+    
+    toolColor = e.target.dataset.color || toolColor;
 }
 
 function stop(e) {
