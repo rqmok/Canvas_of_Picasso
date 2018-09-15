@@ -7,7 +7,6 @@ var toolSize = '5'; // need to choose same size as brush size since it is defaul
 var toolColor = '#000000';
 var linePoints = [];
 var canvasState = [];
-var toolMode = 'draw';
 var undoButton = document.querySelector( '[data-action=undo]' );
 
 // Default
@@ -100,9 +99,8 @@ function selectTool( e ) {
     if ( e.target === e.currentTarget ) return;
     if ( !e.target.dataset.action ) highlightButton( e.target );
 
-    toolMode = e.target.dataset.mode || toolMode;
     toolColor = e.target.dataset.color || toolColor;
-    
+
     if ( e.target === undoButton ) undoState();
     if ( e.target.dataset.action == 'delete' ) clearCanvas();
 }
