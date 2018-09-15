@@ -31,7 +31,7 @@ function clearCanvas() {
 }
 
 function draw(e) {
-    if (e.which === 1 || e.type === 'touchstart' || e.type === 'mousedown') {
+    if (e.which === 1 || e.type === 'touchstart' || e.type === 'touchmove') {
         window.addEventListener('mousemove', draw);
         window.addEventListener('touchmove', draw);
 
