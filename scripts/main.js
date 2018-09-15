@@ -99,10 +99,10 @@ function saveState() {
 function selectTool( e ) {
     if ( e.target === e.currentTarget ) return;
     if ( !e.target.dataset.action ) highlightButton( e.target );
-    toolSize = e.target.dataset.size || toolSize;
-    //canvas.style.cursor = 'url( images/size'+toolSize+'.cur ), crosshair';
+
     toolMode = e.target.dataset.mode || toolMode;
     toolColor = e.target.dataset.color || toolColor;
+    
     if ( e.target === undoButton ) undoState();
     if ( e.target.dataset.action == 'delete' ) clearCanvas();
 }
