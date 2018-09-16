@@ -85,12 +85,27 @@ function selectTool(e) {
 
     tool = e.target.dataset.tool || tool;
 
-    if ( e.target === undoButton ) undoState();
-    if ( e.target.dataset.action == 'delete' ) clearCanvas();
+    switch(e.target.dataset.action) {
+        case 'undo':
+            undoState();
+            break;
+        case 'delete':
+            clearCanvas();
+            break;
+        case 'color':
+            // Show color options
+            break;
+        case 'fill':
+            fillCanvas();
+            break;
+        default:
+            break;
+    }
 }
 
 function selectColor(e) {
     if (e.target === e.currentTarget) return;
+    highlightButton(e.target);
     
     toolColor = e.target.dataset.color || toolColor;
 }
@@ -118,6 +133,18 @@ function updateCanvas() {
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.putImageData(canvasState[0], 0, 0);
     renderLine();
+}
+
+function fillCanvas() {
+    // Save current state of canvas so the fill can be reverted
+    saveState();
+
+    // Clear the canvas
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Fill the canvas with current color
+    context.fillStyle = toolColor;
+    context.fillRect(0, 0, canvas.width, canvas.height);
 }
 
 function getBasicLinePoint(e) {
