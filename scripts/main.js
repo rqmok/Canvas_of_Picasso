@@ -44,6 +44,7 @@ function draw(e) {
                 linePoints.push(getLinePointForPen(e));
                 break;
             case 'pencil':
+                linePoints.push(getLinePointForPencil(e));
                 break;
             default:
                 // Fallback case
@@ -64,7 +65,7 @@ function renderLine() {
     for (var i = 1, length = linePoints.length; i < length; i++) {
         context.lineWidth = linePoints[i].width;
         context.strokeStyle = linePoints[i].color;
-        context.globalAlpha = '0.9';
+        context.globalAlpha = linePoints[i].opacity;
 
         context.beginPath();
         context.moveTo(linePoints[i - 1].x, linePoints[i - 1].y);
@@ -142,6 +143,7 @@ function fillCanvas() {
 
     // Fill the canvas with current color
     context.fillStyle = toolColor;
+    context.globalAlpha = '1';
     context.fillRect(0, 0, canvas.width, canvas.height);
 }
 
@@ -161,7 +163,7 @@ function getBasicLinePoint(e) {
         y: mouseY,
         drag: mouseDrag,
         width: toolSize,
-        color: toolColor
+        color: toolColor,
     }
 }
 
@@ -170,8 +172,21 @@ function getLinePointForPen(e) {
     var point = getBasicLinePoint(e);
 
     // Add the settings of pen to the point
-    point.width = getRandomInt(parseInt(toolSize) - 2, parseInt(toolSize));
+    point.width = getRandomInt(3, 4);
+    point.opacity = '0.9';
     
+    // Return the point
+    return point;
+}
+
+function getLinePointForPencil(e) {
+    // Get the default line point settings
+    var point = getBasicLinePoint(e);
+
+    // Add the settings of pencil to the point
+    point.width = '1';
+    point.opacity = '0.7';
+
     // Return the point
     return point;
 }
