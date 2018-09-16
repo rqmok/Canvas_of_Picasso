@@ -9,7 +9,6 @@ body {
     width: 100vw;
     font-family: sans-serif;
     background-color: lightgray;
-    background-image: url( images/wood.jpg );
     background-size: cover;
     display: flex;
     justify-content: center;
@@ -28,7 +27,7 @@ body {
     height: 720px;
     touch-action: none;
     background-color: white;
-    background-image: url( images/paper.jpg );
+    background-image: url('../images/paper.jpg');
     background-size: cover;
 }
 

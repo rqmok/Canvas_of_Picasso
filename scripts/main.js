@@ -64,6 +64,7 @@ function renderLine() {
     for (var i = 1, length = linePoints.length; i < length; i++) {
         context.lineWidth = linePoints[i].width;
         context.strokeStyle = linePoints[i].color;
+        context.globalAlpha = '0.9';
 
         context.beginPath();
         context.moveTo(linePoints[i - 1].x, linePoints[i - 1].y);
@@ -91,9 +92,6 @@ function selectTool(e) {
             break;
         case 'delete':
             clearCanvas();
-            break;
-        case 'color':
-            // Show color options
             break;
         case 'fill':
             fillCanvas();
