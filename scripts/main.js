@@ -39,6 +39,7 @@ function draw(e) {
 
         switch (tool) {
             case 'brush':
+                linePoints.push(getLinePointForBrush(e));
                 break;
             case 'pen':
                 linePoints.push(getLinePointForPen(e));
@@ -63,13 +64,17 @@ function highlightButton( button ) {
 
 function renderLine() {
     for (var i = 1, length = linePoints.length; i < length; i++) {
+        // Stroke settings
         context.lineWidth = linePoints[i].width;
         context.strokeStyle = linePoints[i].color;
         context.globalAlpha = linePoints[i].opacity;
+        context.lineCap = linePoints[i].lineCap;
+        context.lineJoin = linePoints[i].lineJoin;
 
         context.beginPath();
         context.moveTo(linePoints[i - 1].x, linePoints[i - 1].y);
         context.lineTo(linePoints[i].x, linePoints[i].y);
+
         context.stroke();
     }
 }
@@ -164,6 +169,9 @@ function getBasicLinePoint(e) {
         drag: mouseDrag,
         width: toolSize,
         color: toolColor,
+        opacity: '1',
+        lineCap: 'butt',
+        lineJoin: 'miter'
     }
 }
 
@@ -186,6 +194,19 @@ function getLinePointForPencil(e) {
     // Add the settings of pencil to the point
     point.width = '1';
     point.opacity = '0.7';
+
+    // Return the point
+    return point;
+}
+
+function getLinePointForBrush(e) {
+    // Get the default line point settings
+    var point = getBasicLinePoint(e);
+
+    // Add the settings of brush to the point
+    point.opacity = '1';
+    point.lineCap = 'round';
+    point.lineJoin = 'round';
 
     // Return the point
     return point;
