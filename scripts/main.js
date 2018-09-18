@@ -85,7 +85,7 @@ function setPointContextSettings(i) {
 }
 
 function renderLine() {
-    if (tool != 'brush' || tool != 'pencil') {
+    if (tool != 'brush' && tool != 'pencil') {
         for (var i = 1, length = linePoints.length; i < length; i++) {
             // Source: http://perfectionkills.com/exploring-canvas-drawing-techniques/
             setPointContextSettings(i);
@@ -97,16 +97,16 @@ function renderLine() {
             context.stroke();
         }
     } else {
-        for (var i = 0, length = linePoints.length; i < length; i++) {
+        for (var i = 0, length = linePoints.length; i < length - 1; i++) {
+            var midX = linePoints[i].x + ((linePoints[i + 1].x - linePoints[i].x) / 2);
+            var midY = linePoints[i].y + ((linePoints[i + 1].y - linePoints[i].y) / 2);
             if (!linePoints[i].drag) {
                 setPointContextSettings(i);
 
                 context.beginPath();
                 context.moveTo(linePoints[i].x, linePoints[i].y);
-                context.lineTo(linePoints[i].x + 0.5, linePoints[i].y + 0.5);
-            } else {
-                context.lineTo(linePoints[i].x, linePoints[i].y);
             }
+            context.quadraticCurveTo(linePoints[i].x, linePoints[i].y, midX, midY);
         }
         context.stroke();
     }
@@ -238,7 +238,6 @@ function getLinePointForBrush(e) {
     var point = getBasicLinePoint(e);
 
     // Add the settings of brush to the point
-    point.opacity = '1';
     point.lineCap = 'round';
     point.lineJoin = 'round';
 
