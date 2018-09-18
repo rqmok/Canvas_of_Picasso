@@ -85,7 +85,7 @@ function setPointContextSettings(i) {
 }
 
 function renderLine() {
-    if (tool != 'brush') {
+    if (tool != 'brush' || tool != 'pencil') {
         for (var i = 1, length = linePoints.length; i < length; i++) {
             setPointContextSettings(i);
 
