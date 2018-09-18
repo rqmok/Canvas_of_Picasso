@@ -8,7 +8,14 @@ var toolSize = '5'; // need to choose same size as brush size since it is defaul
 var toolColor = '#000000';
 var linePoints = [];
 var canvasState = [];
+
+// Control Variables
 var undoButton = document.querySelector( '[data-action=undo]' );
+var sizeRange = document.querySelector( '#range_size' );
+var sizeRangeLabel = document.querySelector( '#size_display' );
+
+// Set the range value on start-up
+sizeRange.value = sizeRangeLabel.value = toolSize;
 
 // Event listeners
 canvas.addEventListener('mousedown', draw);
@@ -20,7 +27,13 @@ window.addEventListener('resize', resizeCanvas);
 document.querySelector( '#tools' ).addEventListener( 'click', selectTool );
 document.querySelector( '#colors' ).addEventListener( 'click', selectColor );
 
+sizeRange.addEventListener('input', selectSize)
+
 // Functions
+function selectSize() {
+    toolSize = sizeRange.value;
+}
+
 function clearCanvas() {
     var result = confirm( 'Are you sure you want to delete the picture?' );
     if ( result ) {
