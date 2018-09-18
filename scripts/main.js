@@ -75,19 +75,38 @@ function highlightButton( button ) {
     button.classList.add( 'active' );
 }
 
+function setPointContextSettings(i) {
+    // Set context stroke settings based on the linePoints index given
+    context.lineWidth = linePoints[i].width;
+    context.strokeStyle = linePoints[i].color;
+    context.globalAlpha = linePoints[i].opacity;
+    context.lineCap = linePoints[i].lineCap;
+    context.lineJoin = linePoints[i].lineJoin;
+}
+
 function renderLine() {
-    for (var i = 1, length = linePoints.length; i < length; i++) {
-        // Stroke settings
-        context.lineWidth = linePoints[i].width;
-        context.strokeStyle = linePoints[i].color;
-        context.globalAlpha = linePoints[i].opacity;
-        context.lineCap = linePoints[i].lineCap;
-        context.lineJoin = linePoints[i].lineJoin;
+    if (tool != 'brush') {
+        for (var i = 1, length = linePoints.length; i < length; i++) {
+            setPointContextSettings(i);
 
-        context.beginPath();
-        context.moveTo(linePoints[i - 1].x, linePoints[i - 1].y);
-        context.lineTo(linePoints[i].x, linePoints[i].y);
+            context.beginPath();
+            context.moveTo(linePoints[i - 1].x, linePoints[i - 1].y);
+            context.lineTo(linePoints[i].x, linePoints[i].y);
 
+            context.stroke();
+        }
+    } else {
+        for (var i = 0, length = linePoints.length; i < length; i++) {
+            if (!linePoints[i].drag) {
+                setPointContextSettings(i);
+
+                context.beginPath();
+                context.moveTo(linePoints[i].x, linePoints[i].y);
+                context.lineTo(linePoints[i].x + 0.5, linePoints[i].y + 0.5);
+            } else {
+                context.lineTo(linePoints[i].x, linePoints[i].y);
+            }
+        }
         context.stroke();
     }
 }
