@@ -11,17 +11,19 @@
 
 <body>
     <div id="app">
+        <div id="slider">
+            <input type="range" name="size" id="range_size" value="1" min="1" max="20" oninput="size_display.value = range_size.value" />
+            <output id="size_display"></output>
+        </div>
         <div id="tools" class="toolbar">
             <img src="images/brush.png" data-tool="brush" class="active" />
             <img src="images/pen.png" data-tool="pen" />
             <img src="images/pencil.png" data-tool="pencil" />
             <img src="images/bucket.png" data-action="fill" />
-            <img src="images/paint.png" data-action="paint" />
             <img src="images/undo.png" data-action="undo" class="disabled" />
             <img src="images/delete.png" data-action="delete" />
         </div>
-        <canvas id="canvas" width="720" height="1280"></canvas>
-        <div id="colors" class="toolbar">
+        <div id="colors" class="colorbar">
             <img id="blue" data-color="#0f3c7d"/>   <!--blue hex: 0f3c7d, rgb(15,60,125) -->
             <img id="green" data-color="#41644b"/>  <!--green hex: 41644b, rgb(65,100,75) -->
             <img id="brown" data-color="#a53c23"/>  <!--brown hex: a53c23, rgb(165,60,35) -->
@@ -30,15 +32,8 @@
             <img id="black" data-color="#000000" class="active"/>  <!--black hex: 000000, rgb(0,0,0) -->
             <img id="white" data-color="#ffffff"/>  <!--white hex: ffffff, rgb(255,255,255) --> 
         </div>
-        <div>
-            <input type="range" name="size" id="range_size" value="1" min="1" max="20" oninput="size_display.value = range_size.value" />
-            <output id="size_display"></output>
-        </div>
-        <div>
-            <input type="range" name="size" id="range_shade" value="1" min="1" max="20" oninput="shade_display.value = range_shade.value" />
-            <output  id="shade_display"></output>
-        </div>
     </div>
+    <canvas id="canvas" width="960" height="720"></canvas>
     <script type="text/javascript" src="scripts/main.js"></script>
 </body>
 </html>
