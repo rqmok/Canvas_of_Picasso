@@ -87,6 +87,7 @@ function setPointContextSettings(i) {
 function renderLine() {
     if (tool != 'brush' || tool != 'pencil') {
         for (var i = 1, length = linePoints.length; i < length; i++) {
+            // Source: http://perfectionkills.com/exploring-canvas-drawing-techniques/
             setPointContextSettings(i);
 
             context.beginPath();
@@ -207,6 +208,7 @@ function getBasicLinePoint(e) {
     }
 }
 
+// Source: http://perfectionkills.com/exploring-canvas-drawing-techniques/
 function getLinePointForPen(e) {
     // Get the default line point settings
     var point = getBasicLinePoint(e);
@@ -244,6 +246,7 @@ function getLinePointForBrush(e) {
     return point;
 }
 
+// Source: http://perfectionkills.com/exploring-canvas-drawing-techniques/
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
