@@ -19,24 +19,23 @@ body {
     width: 100vw;
     height: 100vh;
     display: grid;
-    grid-template-columns: 480px auto; 
+    grid-template-columns: 40px 20px 140px 40px 60px 40px;
+    grid-template-rows: 40px 40px 40px 250px; 
 }
 
 #canvas {
-    width: 960px;
-    height: 720px;
     touch-action: none;
     background-color: white;
     background-image: url('../images/paper.jpg');
-    background-size: cover;
+    background-size: cover; 
 }
 
 .toolbar img {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     border: 3px solid #ffffff;
     border-radius: 50%;
-    box-shadow:0 2px 6px rgba( 0,0,0,0.25 );
+    box-shadow: 0 2px 6px rgba( 0,0,0,0.25 );  
 }
 
 .toolbar img.active {
@@ -48,6 +47,28 @@ body {
 }
 
 .toolbar img.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.colorbar img {
+    width: 60px;
+    height: 60px;
+    border: 3px solid #ffffff;
+    border-radius: 50%;
+    box-shadow:0 2px 6px rgba( 0,0,0,0.25 );  
+    
+}
+
+.colorbar img.active {
+    border-color: #00ccff;
+}
+
+.colorbar img:hover {
+    transform: scale(1.1);
+}
+
+.colorbar img.disabled {
     opacity: 0.5;
     pointer-events: none;
 }
@@ -78,4 +99,16 @@ body {
 
 #white {
     background-color: rgb(255,255,255);
+}
+
+#slider {
+    grid-area: 2 / 2 / 3 / 4;
+}
+
+.toolbar {
+    grid-area: 2 / 5 / 4 / 6;
+}
+
+.colorbar {
+    grid-area: 4 / 3 / 5 / 4;
 }
