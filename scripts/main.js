@@ -13,6 +13,7 @@ var canvasState = [];
 var undoButton = document.querySelector( '[data-action=undo]' );
 var sizeRange = document.querySelector( '#range_size' );
 var sizeRangeLabel = document.querySelector( '#size_display' );
+var settings= document.querySelector('html').classList.toggle('menu-open');
 
 // Set the range value on start-up
 sizeRange.value = sizeRangeLabel.value = toolSize;
@@ -148,6 +149,10 @@ function selectColor(e) {
     toolColor = e.target.dataset.color || toolColor;    
 
     updateBorderColors();
+}
+
+function setting(e) {
+
 }
 
 updateBorderColors();
