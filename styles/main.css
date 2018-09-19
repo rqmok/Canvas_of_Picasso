@@ -108,6 +108,8 @@ body {
 }
 
 #tools {
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
     background-color: #565255; /* Davy's Grey */
     grid-row: 1 / span 2;
     grid-column: 2;
