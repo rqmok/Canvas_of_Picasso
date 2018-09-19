@@ -33,7 +33,7 @@ body {
     pointer-events: none;
 }
 
-img.active {
+#colors img.active {
     border-color: #00ccff;
 }
 

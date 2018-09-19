@@ -71,8 +71,9 @@ function draw(e) {
 
 function highlightButton( button ) {
     var buttons = button.parentNode.querySelectorAll( 'img' );
-    buttons.forEach( function( element ){ element.classList.remove( 'active' ) } );
+    buttons.forEach( function( element ) { element.classList.remove( 'active' ) } );
     button.classList.add( 'active' );
+    updateBorderColors();
 }
 
 function setPointContextSettings(i) {
@@ -144,7 +145,18 @@ function selectColor(e) {
     if (e.target === e.currentTarget) return;
     highlightButton(e.target);
     
-    toolColor = e.target.dataset.color || toolColor;
+    toolColor = e.target.dataset.color || toolColor;    
+
+    updateBorderColors();
+}
+
+updateBorderColors();
+function updateBorderColors() {
+    // Update the active button's color and the fill bucket color
+    var buttons = document.querySelectorAll( '#tools img' );
+    buttons.forEach( function( element ) { element.style.borderColor = '#ffffff'; } );
+    document.querySelector( '#tools img.active' ).style.borderColor = toolColor;
+    document.querySelector( '[data-action=\"fill\"]' ).style.borderColor = toolColor;
 }
 
 function stop(e) {
