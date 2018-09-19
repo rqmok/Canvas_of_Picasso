@@ -8,19 +8,6 @@ body {
     height: 100vh;
     width: 100vw;
     font-family: sans-serif;
-    background-color: lightgray;
-    background-size: cover;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#app {
-    width: 100vw;
-    height: 100vh;
-    display: grid;
-    grid-template-columns: 40px 20px 140px 40px 60px 40px;
-    grid-template-rows: 40px 40px 40px 250px; 
 }
 
 #canvas {
@@ -28,9 +15,12 @@ body {
     background-color: white;
     background-image: url('../images/paper.jpg');
     background-size: cover; 
+    width: 100vw;
+    height: 100vh;
 }
 
-.toolbar img {
+.toolbar img,
+.colorbar img {
     width: 60px;
     height: 60px;
     border: 3px solid #ffffff;
@@ -38,37 +28,7 @@ body {
     box-shadow: 0 2px 6px rgba( 0,0,0,0.25 );  
 }
 
-.toolbar img.active {
-    border-color: #00ccff;
-}
-
-.toolbar img:hover {
-    transform: scale(1.1);
-}
-
 .toolbar img.disabled {
-    opacity: 0.5;
-    pointer-events: none;
-}
-
-.colorbar img {
-    width: 60px;
-    height: 60px;
-    border: 3px solid #ffffff;
-    border-radius: 50%;
-    box-shadow:0 2px 6px rgba( 0,0,0,0.25 );  
-    
-}
-
-.colorbar img.active {
-    border-color: #00ccff;
-}
-
-.colorbar img:hover {
-    transform: scale(1.1);
-}
-
-.colorbar img.disabled {
     opacity: 0.5;
     pointer-events: none;
 }
@@ -101,14 +61,54 @@ body {
     background-color: rgb(255,255,255);
 }
 
+#sidebar {
+    position: fixed;
+    background-color: #7C7A7C; /* Trolley Grey */
+    height: 100vh;
+    width: 300px;
+    display: grid;
+    grid-template-rows: 100px auto;
+    grid-template-columns: 250px 100px;
+    transform: translateX(-250px);
+    transition: 0.5s;
+}
+
+.menu-open #sidebar {
+    transform: translateX(0px);
+}
+
 #slider {
-    grid-area: 2 / 2 / 3 / 4;
+    grid-row: 1;
+    grid-column: 1;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin: auto;
 }
 
-.toolbar {
-    grid-area: 2 / 5 / 4 / 6;
+#slider output {
+    margin: 5px;
 }
 
-.colorbar {
-    grid-area: 4 / 3 / 5 / 4;
+#colors {
+    grid-row: 2;
+    grid-column: 1;
+    display: grid;
+    grid-template-rows: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+}
+
+#colors img {
+    margin: auto;
+}
+
+#tools {
+    background-color: #565255; /* Davy's Grey */
+    grid-row: 1 / span 2;
+    grid-column: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
 }
