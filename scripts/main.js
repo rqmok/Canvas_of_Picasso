@@ -13,7 +13,6 @@ var canvasState = [];
 var undoButton = document.querySelector( '[data-action=undo]' );
 var sizeRange = document.querySelector( '#range_size' );
 var sizeRangeLabel = document.querySelector( '#size_display' );
-var settings= document.querySelector('html').classList.toggle('menu-open');
 
 // Set the range value on start-up
 sizeRange.value = sizeRangeLabel.value = toolSize;
@@ -137,6 +136,9 @@ function selectTool(e) {
         case 'fill':
             fillCanvas();
             break;
+        case 'settings':
+            openSettings();
+            break;
         default:
             break;
     }
@@ -151,8 +153,8 @@ function selectColor(e) {
     updateBorderColors();
 }
 
-function setting(e) {
-
+function openSettings() {
+    document.querySelector( 'html' ).classList.toggle( 'menu-open' );
 }
 
 updateBorderColors();
