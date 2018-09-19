@@ -21,11 +21,11 @@ body {
 
 .toolbar img,
 .colorbar img {
-    width: 60px;
-    height: 60px;
-    border: 3px solid #ffffff;
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
-    box-shadow: 0 2px 6px rgba( 0,0,0,0.25 );  
+    box-shadow: 0 2px 6px rgba( 0,0,0,0.25 );
+    border: 3px solid #ffffff;
 }
 
 .toolbar img.disabled {
@@ -33,32 +33,36 @@ body {
     pointer-events: none;
 }
 
+img.active {
+    border-color: #00ccff;
+}
+
 #blue {
-    background-color: rgb(15,60,125);
+    background: rgb(15,60,125);
 }
 
 #green {
-    background-color: rgb(65,100,75);
+    background: rgb(65,100,75);
 }
 
 #brown {
-    background-color: rgb(165,60,35);
+    background: rgb(165,60,35);
 }
 
 #yellow {
-    background-color: rgb(195,180,100);
+    background: rgb(195,180,100);
 }
 
 #red {
-    background-color: rgb(115,35,55);
+    background: rgb(115,35,55);
 }
 
 #black {
-    background-color: rgb(0,0,0);
+    background: rgb(0,0,0);
 }
 
 #white {
-    background-color: rgb(255,255,255);
+    background: rgb(255,255,255);
 }
 
 #sidebar {
