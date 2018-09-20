@@ -25,7 +25,7 @@ body {
     height: 70px;
     border-radius: 50%;
     box-shadow: 0 2px 6px rgba( 0,0,0,0.25 );
-    border: 3px solid #ffffff;
+    border: 4px solid #ffffff;
 }
 
 .toolbar img.disabled {
@@ -34,7 +34,7 @@ body {
 }
 
 #colors img.active {
-    border-color: #00ccff;
+    border-color: #3DBBFF; /* Picton Blue */
 }
 
 #blue {
@@ -66,15 +66,17 @@ body {
 }
 
 #sidebar {
+    box-shadow: 0 0px 8px 0 rgba(0,0,0,0.2);
     position: fixed;
-    background-color: #7C7A7C; /* Trolley Grey */
-    height: 100vh;
+    background-color: #3C5E70; /* Deep Space Sparkle */
+    height: 96vh;
     width: 300px;
     display: grid;
     grid-template-rows: 100px auto;
     grid-template-columns: 250px 100px;
     transform: translateX(-250px);
     transition: 0.5s;
+    margin-top: 2vh;
 }
 
 .menu-open #sidebar {
@@ -91,7 +93,8 @@ body {
 }
 
 #slider output {
-    margin: 5px;
+    padding-left: 10px;
+    color: white;
 }
 
 #colors {
@@ -110,7 +113,7 @@ body {
 #tools {
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
-    background-color: #565255; /* Davy's Grey */
+    background-color: #133344; /* Yankees Blue */
     grid-row: 1 / span 2;
     grid-column: 2;
     display: flex;
