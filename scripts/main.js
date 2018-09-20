@@ -4,7 +4,7 @@ var context = canvas.getContext('2d');
 
 // Canvas settings
 var tool = 'brush';
-var toolSize = '5'; // need to choose same size as brush size since it is default
+var toolSize = '5'; 
 var toolColor = '#000000';
 var linePoints = [];
 var canvasState = [];
@@ -38,10 +38,6 @@ document.querySelector( '#colors' ).addEventListener( 'click', selectColor );
 sizeRange.addEventListener('input', selectSize)
 
 // Functions
-function selectSize() {
-    toolSize = sizeRange.value;
-}
-
 function clearCanvas() {
     var result = confirm( 'Are you sure you want to delete the picture?' );
     if ( result ) {
@@ -54,12 +50,9 @@ function clearCanvas() {
 function draw(e) {
     if (e.which === 1 || e.type === 'touchstart' || e.type === 'touchmove') {
         resetIdleTimer();
-
         window.addEventListener('mousemove', draw);
         window.addEventListener('touchmove', draw);
-
         if (e.type === 'touchstart' || e.type === 'mousedown') saveState();
-
         switch (tool) {
             case 'brush':
                 linePoints.push(getLinePointForBrush(e));
@@ -74,137 +67,8 @@ function draw(e) {
                 // Fallback case
                 linePoints.push(getBasicLinePoint(e));
         }
-
         updateCanvas();
     }
-}
-
-function highlightButton( button ) {
-    var buttons = button.parentNode.querySelectorAll( 'img' );
-    buttons.forEach( function( element ) { element.classList.remove( 'active' ) } );
-    button.classList.add( 'active' );
-    updateBorderColors();
-}
-
-function setPointContextSettings(i) {
-    // Set context stroke settings based on the linePoints index given
-    context.lineWidth = linePoints[i].width;
-    context.strokeStyle = linePoints[i].color;
-    context.globalAlpha = linePoints[i].opacity;
-    context.lineCap = linePoints[i].lineCap;
-    context.lineJoin = linePoints[i].lineJoin;
-}
-
-function renderLine() {
-    if (tool != 'brush' && tool != 'pencil') {
-        for (var i = 1, length = linePoints.length; i < length; i++) {
-            // Source: http://perfectionkills.com/exploring-canvas-drawing-techniques/
-            setPointContextSettings(i);
-
-            context.beginPath();
-            context.moveTo(linePoints[i - 1].x, linePoints[i - 1].y);
-            context.lineTo(linePoints[i].x, linePoints[i].y);
-
-            context.stroke();
-        }
-    } else {
-        for (var i = 0, length = linePoints.length; i < length - 1; i++) {
-            var midX = linePoints[i].x + ((linePoints[i + 1].x - linePoints[i].x) / 2);
-            var midY = linePoints[i].y + ((linePoints[i + 1].y - linePoints[i].y) / 2);
-            if (!linePoints[i].drag) {
-                setPointContextSettings(i);
-
-                context.beginPath();
-                context.moveTo(linePoints[i].x, linePoints[i].y);
-            }
-            context.quadraticCurveTo(linePoints[i].x, linePoints[i].y, midX, midY);
-        }
-        context.stroke();
-    }
-}
-
-function saveState() {
-    canvasState.unshift(context.getImageData(0, 0, canvas.width, canvas.height));
-    linePoints = [];
-    if (canvasState.length > 25) canvasState.length = 25;
-    undoButton.classList.remove( 'disabled' );
-}
-
-function selectTool(e) {
-    resetIdleTimer();
-
-    if ( e.target === e.currentTarget ) return;
-    if ( !e.target.dataset.action ) highlightButton( e.target );
-
-    tool = e.target.dataset.tool || tool;
-
-    switch(e.target.dataset.action) {
-        case 'undo':
-            undoState();
-            break;
-        case 'delete':
-            clearCanvas();
-            break;
-        case 'fill':
-            fillCanvas();
-            break;
-        case 'settings':
-            openSettings();
-            break;
-        default:
-            break;
-    }
-}
-
-function selectColor(e) {
-    resetIdleTimer();
-
-    if (e.target === e.currentTarget) return;
-    highlightButton(e.target);
-    
-    toolColor = e.target.dataset.color || toolColor;    
-
-    updateBorderColors();
-}
-
-function openSettings() {
-    document.querySelector( 'html' ).classList.toggle( 'menu-open' );
-}
-
-updateBorderColors();
-function updateBorderColors() {
-    // Update the active button's color and the fill bucket color
-    var buttons = document.querySelectorAll( '#tools img' );
-    buttons.forEach( function( element ) { element.style.borderColor = '#ffffff'; } );
-    document.querySelector( '#tools img.active' ).style.borderColor = toolColor;
-    document.querySelector( '[data-action=\"fill\"]' ).style.borderColor = toolColor;
-}
-
-function stop(e) {
-    if (e.which === 1 || e.type === 'touchend') {
-        resetIdleTimer();
-
-        window.removeEventListener('mousemove', draw);
-        window.removeEventListener('touchmove', draw);
-    }
-}
-
-resizeCanvas();
-function resizeCanvas() {
-    canvas.width = canvas.clientWidth;
-    canvas.height = canvas.clientHeight;
-    if ( canvasState.length ) updateCanvas();
-}
-
-function undoState() {
-    context.putImageData( canvasState.shift(), 0, 0 );
-    if ( !canvasState.length ) undoButton.classList.add( 'disabled' );
-}
-
-function updateCanvas() {
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    context.putImageData(canvasState[0], 0, 0);
-    renderLine();
 }
 
 function fillCanvas() {
@@ -224,13 +88,11 @@ function getBasicLinePoint(e) {
     var mouseX = e.pageX - canvas.offsetLeft;
     var mouseY = e.pageY - canvas.offsetTop;
     var mouseDrag = e.type === 'mousemove';
-
     if (e.type === 'touchstart' || e.type === 'touchmove' ) {
         mouseX = e.touches[0].pageX - canvas.offsetLeft;
         mouseY = e.touches[0].pageY - canvas.offsetTop;
         mouseDrag = e.type === 'touchmove';
     }
-
     return {
         x: mouseX,
         y: mouseY,
@@ -244,6 +106,18 @@ function getBasicLinePoint(e) {
 }
 
 // Source: http://perfectionkills.com/exploring-canvas-drawing-techniques/
+function getLinePointForBrush(e) {
+    // Get the default line point settings
+    var point = getBasicLinePoint(e);
+
+    // Add the settings of brush to the point
+    point.lineCap = 'round';
+    point.lineJoin = 'round';
+
+    // Return the point
+    return point;
+}
+
 function getLinePointForPen(e) {
     // Get the default line point settings
     var point = getBasicLinePoint(e);
@@ -268,21 +142,136 @@ function getLinePointForPencil(e) {
     return point;
 }
 
-function getLinePointForBrush(e) {
-    // Get the default line point settings
-    var point = getBasicLinePoint(e);
-
-    // Add the settings of brush to the point
-    point.lineCap = 'round';
-    point.lineJoin = 'round';
-
-    // Return the point
-    return point;
-}
-
 // Source: http://perfectionkills.com/exploring-canvas-drawing-techniques/
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function highlightButton( button ) {
+    var buttons = button.parentNode.querySelectorAll( 'img' );
+    buttons.forEach( function( element ) { element.classList.remove( 'active' ) } );
+    button.classList.add( 'active' );
+    updateBorderColors();
+}
+
+function openSettings() {
+    document.querySelector( 'html' ).classList.toggle( 'menu-open' );
+}
+
+function renderLine() {
+    if (tool != 'brush' && tool != 'pencil') {
+        for (var i = 1, length = linePoints.length; i < length; i++) {
+            // Source: http://perfectionkills.com/exploring-canvas-drawing-techniques/
+            setPointContextSettings(i);
+            context.beginPath();
+            context.moveTo(linePoints[i - 1].x, linePoints[i - 1].y);
+            context.lineTo(linePoints[i].x, linePoints[i].y);
+            context.stroke();
+        }
+    } else {
+        for (var i = 0, length = linePoints.length; i < length - 1; i++) {
+            var midX = linePoints[i].x + ((linePoints[i + 1].x - linePoints[i].x) / 2);
+            var midY = linePoints[i].y + ((linePoints[i + 1].y - linePoints[i].y) / 2);
+            if (!linePoints[i].drag) {
+                setPointContextSettings(i);
+                context.beginPath();
+                context.moveTo(linePoints[i].x, linePoints[i].y);
+            }
+            context.quadraticCurveTo(linePoints[i].x, linePoints[i].y, midX, midY);
+        }
+        context.stroke();
+    }
+}
+
+function saveState() {
+    canvasState.unshift(context.getImageData(0, 0, canvas.width, canvas.height));
+    linePoints = [];
+    if (canvasState.length > 25) canvasState.length = 25;
+    undoButton.classList.remove( 'disabled' );
+}
+
+function selectTool(e) {
+    resetIdleTimer();
+    if ( e.target === e.currentTarget ) return;
+    if ( !e.target.dataset.action ) highlightButton( e.target );
+    tool = e.target.dataset.tool || tool;
+    switch(e.target.dataset.action) {
+        case 'undo':
+            undoState();
+            break;
+        case 'delete':
+            clearCanvas();
+            break;
+        case 'fill':
+            fillCanvas();
+            break;
+        case 'settings':
+            openSettings();
+            break;
+        default:
+            break;
+    }
+}
+
+function selectColor(e) {
+    resetIdleTimer();
+    if (e.target === e.currentTarget) return;
+    highlightButton(e.target);
+    toolColor = e.target.dataset.color || toolColor;    
+    updateBorderColors();
+}
+
+function selectSize() {
+    toolSize = sizeRange.value;
+}
+
+function setPointContextSettings(i) {
+    // Set context stroke settings based on the linePoints index given
+    context.lineWidth = linePoints[i].width;
+    context.strokeStyle = linePoints[i].color;
+    context.globalAlpha = linePoints[i].opacity;
+    context.lineCap = linePoints[i].lineCap;
+    context.lineJoin = linePoints[i].lineJoin;
+}
+
+updateBorderColors();
+function updateBorderColors() {
+    // Update the active button's color and the fill bucket color
+    var buttons = document.querySelectorAll( '#tools img' );
+    buttons.forEach( function( element ) { element.style.borderColor = '#ffffff'; } );
+    document.querySelector( '#tools img.active' ).style.borderColor = toolColor;
+    document.querySelector( '[data-action=\"fill\"]' ).style.borderColor = toolColor;
+}
+
+// Helper function to reset the timer
+function resetIdleTimer() {
+    idleTimer = 0;
+}
+
+resizeCanvas();
+function resizeCanvas() {
+    canvas.width = canvas.clientWidth;
+    canvas.height = canvas.clientHeight;
+    if ( canvasState.length ) updateCanvas();
+}
+
+function stop(e) {
+    if (e.which === 1 || e.type === 'touchend') {
+        resetIdleTimer();
+        window.removeEventListener('mousemove', draw);
+        window.removeEventListener('touchmove', draw);
+    }
+}
+
+function undoState() {
+    context.putImageData( canvasState.shift(), 0, 0 );
+    if ( !canvasState.length ) undoButton.classList.add( 'disabled' );
+}
+
+function updateCanvas() {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.putImageData(canvasState[0], 0, 0);
+    renderLine();
 }
 
 function updateTimer() {
@@ -295,9 +284,4 @@ function updateTimer() {
         if (canvasState.length || linePoints.length)
             clearCanvas(); // Clear the canvas
     }
-}
-
-// Helper function to reset the timer
-function resetIdleTimer() {
-    idleTimer = 0;
 }
