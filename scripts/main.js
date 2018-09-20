@@ -9,6 +9,14 @@ var toolColor = '#000000';
 var linePoints = [];
 var canvasState = [];
 
+// Tracks the idle time of the user
+var idleTimer = 0;
+// The time (in seconds) when the canvas should be cleared
+var clearCanvasTimeout = 60;
+
+// Begin the timer to track idle time
+window.setInterval(updateTimer, 1000); // Update the timer every minute
+
 // Control Variables
 var undoButton = document.querySelector( '[data-action=undo]' );
 var sizeRange = document.querySelector( '#range_size' );
@@ -45,6 +53,8 @@ function clearCanvas() {
 
 function draw(e) {
     if (e.which === 1 || e.type === 'touchstart' || e.type === 'touchmove') {
+        resetIdleTimer();
+
         window.addEventListener('mousemove', draw);
         window.addEventListener('touchmove', draw);
 
@@ -121,6 +131,8 @@ function saveState() {
 }
 
 function selectTool(e) {
+    resetIdleTimer();
+
     if ( e.target === e.currentTarget ) return;
     if ( !e.target.dataset.action ) highlightButton( e.target );
 
@@ -145,6 +157,8 @@ function selectTool(e) {
 }
 
 function selectColor(e) {
+    resetIdleTimer();
+
     if (e.target === e.currentTarget) return;
     highlightButton(e.target);
     
@@ -168,6 +182,8 @@ function updateBorderColors() {
 
 function stop(e) {
     if (e.which === 1 || e.type === 'touchend') {
+        resetIdleTimer();
+
         window.removeEventListener('mousemove', draw);
         window.removeEventListener('touchmove', draw);
     }
@@ -267,4 +283,20 @@ function getLinePointForBrush(e) {
 // Source: http://perfectionkills.com/exploring-canvas-drawing-techniques/
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function updateTimer() {
+    // Add one minute to the timer
+    idleTimer += 1;
+
+    // Check if it is time to clear the timer
+    if (idleTimer === clearCanvasTimeout) {
+        idleTimer = 0; // Reset the timer
+        clearCanvas() // Clear the canvas
+    }
+}
+
+// Helper function to reset the timer
+function resetIdleTimer() {
+    idleTimer = 0;
 }
