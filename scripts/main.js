@@ -262,7 +262,7 @@ function getLinePointForPencil(e) {
 
     // Add the settings of pencil to the point
     point.width = '1';
-    point.opacity = '0.7';
+    point.opacity = '0.9';
 
     // Return the point
     return point;
@@ -292,7 +292,8 @@ function updateTimer() {
     // Check if it is time to clear the timer
     if (idleTimer === clearCanvasTimeout) {
         resetIdleTimer(); // Reset the timer
-        clearCanvas(); // Clear the canvas
+        if (canvasState.length)
+            clearCanvas(); // Clear the canvas
     }
 }
 
