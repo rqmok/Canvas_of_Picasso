@@ -292,7 +292,7 @@ function updateTimer() {
     // Check if it is time to clear the timer
     if (idleTimer === clearCanvasTimeout) {
         resetIdleTimer(); // Reset the timer
-        if (canvasState.length)
+        if (canvasState.length || linePoints.length)
             clearCanvas(); // Clear the canvas
     }
 }
