@@ -291,8 +291,8 @@ function updateTimer() {
 
     // Check if it is time to clear the timer
     if (idleTimer === clearCanvasTimeout) {
-        idleTimer = 0; // Reset the timer
-        clearCanvas() // Clear the canvas
+        resetIdleTimer(); // Reset the timer
+        clearCanvas(); // Clear the canvas
     }
 }
 
